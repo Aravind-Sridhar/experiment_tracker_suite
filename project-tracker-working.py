@@ -43,7 +43,7 @@ class ExperimentTracker(QMainWindow):
         self.project_description = QTextEdit()
         self.usernames = QLineEdit("Aravind Sridhar")
         self.project_association = QComboBox()
-        self.project_association.addItems(["Adiuvo", "Auxillium", "Others"])
+        self.project_association.addItems(["Adiuvo", "Auxillium", "Personal", "Others (Add in Description)"])
         
         # Date fields with calendar popup
         self.project_start_date = QDateEdit(calendarPopup=True)
@@ -354,8 +354,8 @@ class ExperimentTracker(QMainWindow):
                 "usernames": [u.strip() for u in self.usernames.text().split(',')],
                 "association": self.project_association.currentText(),
                 "dates": {
-                    "start": self.project_start_date.date().toString("yyyy-MM-dd"),
-                    "end": self.project_end_date.date().toString("yyyy-MM-dd")
+                    "start": self.project_start_date.date().toString("dd-MM-yyyy"),
+                    "end": self.project_end_date.date().toString("dd-MM-yyyy")
                 }
             }
         }
@@ -419,8 +419,8 @@ class ExperimentTracker(QMainWindow):
                 "version": version,
                 "file_structure": file_hierarchy,
                 "dates": {
-                    "start": self.experiment_start_date.date().toString("yyyy-MM-dd"),
-                    "end": self.experiment_end_date.date().toString("yyyy-MM-dd")
+                    "start": self.experiment_start_date.date().toString("dd-MM-yyyy"),
+                    "end": self.experiment_end_date.date().toString("dd-MM-yyyy")
                 }
             }
         }

@@ -17,7 +17,7 @@ class ExperimentTracker(QMainWindow):
         self.initUI()
         
     def initUI(self):
-        self.setWindowTitle("Experiment Tracker")
+        self.setWindowTitle("Experiment Tracking Suite")
         self.setGeometry(100, 100, 500, 300)
         
         main_widget = QWidget()

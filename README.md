@@ -1,11 +1,14 @@
 # Experiment Tracking Suite
 
 ## Overview
-Experiment Tracking Suite is a desktop application built with Python and PyQt5 that helps you manage and track research projects and their experiments. With an intuitive graphical interface, you can easily create projects, manage experiments, attach related files, and keep track of version changes—all while ensuring your data is safely backed up.
+Experiment Tracking Suite is an application built with Python and PyQt5 that helps you manage and track research projects and their experiments. With an intuitive and minimalistic graphical interface, you can easily create projects, manage experiments, attach related files, and keep track of version changes—all while ensuring your experiment related documentation is safely backed up.
+
+![Project Management Tab](1.png)
+![Experiment Management Tab](2.png)
 
 ## Features
 - **Project Management**
-  - **Create Projects:** Enter project details such as title, description, team members, association (e.g., Adiuvo, Auxillium, Personal), and start/end dates.
+  - **Create Projects:** Enter project details such as title, description, team members, association, and start/end dates.
   - **File Storage:** Save project metadata as JSON files in a chosen project folder.
   - **Backup:** Automatically backup project files to a designated tracking directory.
   
@@ -29,7 +32,7 @@ Experiment Tracking Suite is a desktop application built with Python and PyQt5 t
 ### Steps
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/Aravind-Sridhar/project-tracker-tool.git
+   git clone https://github.com/Aravind-Sridhar/experiment_tracker_suite.git
    cd project-tracker-tool
    ```
 
@@ -49,7 +52,7 @@ Experiment Tracking Suite is a desktop application built with Python and PyQt5 t
 
 ### Initial Setup
 - **Tracking Directory:**  
-  On the first run, the app prompts you to select a tracking directory. This directory is used to store backup copies of your project and experiment files and is saved in `~/.experiment_tracker_config.json`.
+  On the first run, the app prompts you to select a tracking directory. This directory is used to store backup copies of your project and experiment files and is saved in `C:\Users\your_username\.experiment_tracker_config.json`.
   
 - **Project Folder:**  
   In the **Project** tab, click **Choose Project Folder** to select the folder where project JSON files will be stored.

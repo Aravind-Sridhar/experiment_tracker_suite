@@ -371,8 +371,13 @@ class ExperimentTracker(QMainWindow):
             self.base_folder
         )
         if files:
+            base_drive = os.path.splitdrive(self.base_folder)[0].upper()
             for file in files:
-                rel_path = os.path.relpath(file, self.base_folder)
+                file_drive = os.path.splitdrive(file)[0].upper()
+                if file_drive == base_drive:
+                    rel_path = os.path.relpath(file, self.base_folder)
+                else:
+                    rel_path = os.path.abspath(file)
                 self.file_list.addItem(rel_path)
 
     def select_folder(self):
@@ -387,11 +392,19 @@ class ExperimentTracker(QMainWindow):
             QFileDialog.ShowDirsOnly
         )
         if folder:
+            base_drive = os.path.splitdrive(self.base_folder)[0].upper()
+            folder_drive = os.path.splitdrive(folder)[0].upper()
+            same_drive = (folder_drive == base_drive)
+            
             for root, _, files in os.walk(folder):
                 for file in files:
                     abs_path = os.path.join(root, file)
-                    rel_path = os.path.relpath(abs_path, self.base_folder)
+                    if same_drive:
+                        rel_path = os.path.relpath(abs_path, self.base_folder)
+                    else:
+                        rel_path = os.path.abspath(abs_path)
                     self.file_list.addItem(rel_path)
+
 
     def save_project(self):
         if not self.base_folder:

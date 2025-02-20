@@ -439,25 +439,18 @@ class ExperimentTracker(QMainWindow):
             }
         }
         
+        # Save to project folder
         with open(filepath, 'w') as f:
             json.dump(metadata, f, indent=4)
             
+        # Save to tracking directory backup
         if self.tracking_dir:
-            tracking_path = os.path.join(self.tracking_dir, f"{safe_title}.json")
-            tracking_data = {
-                "project_title": project_title,
-                "project_path": filepath,
-                "experiments": []
-            }
-            
-            if os.path.exists(tracking_path):
-                with open(tracking_path, 'r') as f:
-                    existing_data = json.load(f)
-                    tracking_data['experiments'] = existing_data.get('experiments', [])
-            
-            with open(tracking_path, 'w') as f:
-                json.dump(tracking_data, f, indent=4)
-            
+            backup_dir = os.path.join(self.tracking_dir, "backup", "Projects")
+            os.makedirs(backup_dir, exist_ok=True)
+            backup_path = os.path.join(backup_dir, filename)
+            with open(backup_path, 'w') as f:
+                json.dump(metadata, f, indent=4)
+        
         self.load_existing_projects()
         QMessageBox.information(self, "Success", "Project created successfully!")
 
@@ -489,9 +482,11 @@ class ExperimentTracker(QMainWindow):
             self.show_warning(f"Error reading project file: {str(e)}")
             return
 
+        # Build hierarchical file structure
         file_paths = [self.file_list.item(i).text() for i in range(self.file_list.count())]
         file_hierarchy = self.build_hierarchy(file_paths)
 
+        # Create unique filename
         safe_project = self.sanitize_filename(project_title)
         safe_experiment = self.sanitize_filename(experiment_title)
         base_name = f"{safe_project}_{safe_experiment}_v{version}"
@@ -519,30 +514,18 @@ class ExperimentTracker(QMainWindow):
         }
 
         try:
+            # Save to project folder
             with open(experiment_path, 'w') as f:
                 json.dump(experiment_data, f, indent=4)
             
+            # Save to tracking directory backup
             if self.tracking_dir:
-                tracking_file = os.path.join(self.tracking_dir, f"{safe_project}.json")
-                if os.path.exists(tracking_file):
-                    with open(tracking_file, 'r') as f:
-                        tracking_data = json.load(f)
-                else:
-                    tracking_data = {
-                        "project_title": project_title,
-                        "project_path": os.path.join(self.base_folder, project_file),
-                        "experiments": []
-                    }
-
-                tracking_data['experiments'].append({
-                    "title": experiment_title,
-                    "version": version,
-                    "path": experiment_path,
-                    "created": QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss")
-                })
-
-                with open(tracking_file, 'w') as f:
-                    json.dump(tracking_data, f, indent=4)
+                backup_dir = os.path.join(self.tracking_dir, "backup", "Experiments")
+                os.makedirs(backup_dir, exist_ok=True)
+                backup_filename = os.path.basename(experiment_path)
+                backup_path = os.path.join(backup_dir, backup_filename)
+                with open(backup_path, 'w') as f:
+                    json.dump(experiment_data, f, indent=4)
 
             self.file_list.clear()
             self.version.setStyleSheet("")
@@ -550,6 +533,7 @@ class ExperimentTracker(QMainWindow):
             QMessageBox.information(self, "Success", "Experiment saved successfully!")
         except Exception as e:
             self.show_warning(f"Error saving experiment: {str(e)}")
+
 
     def build_hierarchy(self, file_paths):
         hierarchy = {}
